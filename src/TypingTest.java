@@ -3,7 +3,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 
 public class TypingTest implements KeyListener {
 
@@ -20,7 +23,8 @@ public class TypingTest implements KeyListener {
     // No argument constructor
     public TypingTest()
     {
-        window = new TypingTestView();
+        window = new TypingTestView(this);
+        window.addKeyListener(this);
     }
 
     // Getters and Setters
@@ -54,10 +58,37 @@ public class TypingTest implements KeyListener {
 
 
     // Other Methods
+    // Method called every time a key is typed
     @Override
     public void keyTyped(KeyEvent e)
     {
-        // Method called every time a key is typed
+        String currentWord = text.get(0);
+
+        if (cursorIndex < currentWord.length() && e.getKeyChar() == currentWord.charAt(cursorIndex))
+        {
+            cursorIndex++;
+            if (cursorIndex == currentWord.length())
+            {
+                cursorIndex = 0;
+                typedWords.add(text.remove(0));
+
+            }
+        }
+        else
+        {
+            System.out.println("Wrong letter");
+        }
+
+        System.out.println(WPM);
+
+
+        currentWord = text.get(0); // Get the new current word if it was removed
+        System.out.print(currentWord.substring(0, cursorIndex) + "|" + currentWord.substring(cursorIndex) + " ");
+
+        for (int i = 1; i < 10; i++)
+        {
+            System.out.print(text.get(i) + " ");
+        }
     }
 
     @Override
@@ -73,7 +104,7 @@ public class TypingTest implements KeyListener {
     }
 
     // Method that returns the words per minute.
-    public int calculateWPM()
+    private int calculateWPM()
     {
         double minutes = getElapsedTimeMinutes();
         if (minutes == 0)
@@ -84,18 +115,45 @@ public class TypingTest implements KeyListener {
         return (int) (typedWords.size() / minutes);
     }
 
-
-
-    private void updateView()
+    // Initializes an arrayList of strings that represents the text the user will type with random words.
+    private ArrayList<String> generateRandomWords()
     {
-        // This method will update the window with updated information every frame.
+        // This is code I found online that allows me to add all these words to an arrayList
+        // without having to do it on many separate lines.
+        ArrayList<String> newAr =   new ArrayList<>(Arrays.asList(
+                "ability", "absurd", "academy", "access", "adapt",
+                "adventure", "aftermath", "aggregate", "alarm", "alloy",
+                "analysis", "ancestor", "angle", "antique", "apology",
+                "apparatus", "appreciate", "arbitrary", "archive", "arena",
+                "arrest", "articulate", "assault", "asset", "assign",
+                "assist", "assume", "assure", "atmosphere", "attach",
+                "auction", "audit", "authentic", "authorize", "autumn",
+                "availability", "avatar", "avenue", "awareness", "awesome",
+                "awkward", "bachelor", "ballet", "banner", "barrier",
+                "baseline", "battle", "beacon", "behavior", "believe",
+                "bicycle", "biography", "biology", "blanket", "blizzard",
+                "blossom", "blueprint", "blunder", "boardwalk", "boisterous",
+                "boundary", "bouquet", "bravery", "brevity", "broker",
+                "butterfly", "cabinet", "calculus", "camera", "campaign",
+                "canal", "candle", "capability", "capacitor", "capital",
+                "captain", "carriage", "catalog", "catalyst", "category",
+                "caterpillar", "cautious", "caveat", "celebrate", "census",
+                "ceremony", "certainty", "challenge", "chamber", "champion",
+                "channel", "chaos", "characteristic", "charisma", "charity",
+                "chart", "chase", "checkpoint", "cheer", "chemistry"
+        ));
+
+        // Line of code I found online that randomizes the array order
+        Collections.shuffle(newAr);
+
+        return newAr;
     }
 
     // Main logic to run the test
     private void startTest()
     {
         // Variables that should be reset each time a new run starts.
-        text = initializeText();
+        text = generateRandomWords();
         // I found this online it allows me to access the current time of the computer,
         // so I can calculate elapsed time.
         startingTime = System.currentTimeMillis();
@@ -105,6 +163,7 @@ public class TypingTest implements KeyListener {
         elapsedTime = 0;
         setupUpdateTimer();
         updateTimer.start();
+
     }
 
     public double getElapsedTimeMinutes()
@@ -118,23 +177,16 @@ public class TypingTest implements KeyListener {
 
     private void setupUpdateTimer()
     {
-        // Code I found online that is calls this event every frame (so these variables will be continuously updated).
+        // Code I found online that calls this event every frame (so these variables will be continuously updated).
         updateTimer = new Timer(16, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e)
             {
                 WPM = calculateWPM();
-                System.out.println(WPM);
+                window.repaint();
             }
         }
         );
-    }
-
-    // Initializes the arrayList of strings that represents the text the user will type with random words.
-    private ArrayList<String> initializeText()
-    {
-        // Add random words from a list to this input array
-        return null;
     }
 
     // Main method that makes a new TypingTest.java object and calls startTest() on it.
