@@ -43,10 +43,11 @@ public class TypingTestView extends JFrame {
                 totalWidth = 0;
                 height += 100;
             }
-            g.drawString(text.get(i), calcCenteredTextOffset(text.get(i), g), height);
+            g.drawString(text.get(i), calcCenteredTextOffset(text, g), height);
         }
     }
 
+    // Version of calcCenteredTextOffset for only taking a string
     private int calcCenteredTextOffset(String text, Graphics g)
     {
         FontMetrics metrics = g.getFontMetrics();
@@ -55,6 +56,34 @@ public class TypingTestView extends JFrame {
         return (SCREEN_WIDTH - textWidth) / 2;
     }
 
+    // Version of calcCenteredTextOffset for taking an ArrayList of strings
+    private int calcCenteredTextOffset(ArrayList<String> text, Graphics g)
+    {
+        FontMetrics metrics = g.getFontMetrics();
+        int textWidth = 0;
+
+        for (int i = 0; i < text.size(); i++)
+        {
+            textWidth += metrics.stringWidth(text.get(i));
+        }
+
+        return (SCREEN_WIDTH - textWidth) / 2;
+    }
+
+    private ArrayList<String> getNewArrayList()
+    {
+        ArrayList<String> textToPrint = new ArrayList<>();
+        for (int i = 0; i < backend.getText().size(); i ++)
+        {
+            textToPrint.add(backend.getText().get(i));
+        }
+
+        String currentWord = textToPrint.get(0);
+        // Set first word to have the cursor in the right position
+        textToPrint.set(0, currentWord.substring(0, backend.getCursorIndex()) + "|" +
+                currentWord.substring(backend.getCursorIndex()) + " ");
+        return textToPrint;
+    }
 
     // Code I found online that allows me to use double buffering for a smoother screen refresh
     // and to eliminate JFrame flickering
@@ -79,18 +108,11 @@ public class TypingTestView extends JFrame {
 
 
                 // Draw text
-                ArrayList<String> textToPrint = ArrayList<String>();
-                // TODO: Fix this and make it so that the textToPrint is a copy of the getText array,
-                //  but don't just set it equal because I think this is breaking it
-                        backend.getText();
-
-                String currentWord = textToPrint.get(0);
-                // Set first word to have the cursor in the right position
-                textToPrint.set(0, currentWord.substring(0, backend.getCursorIndex()) + "|" +
-                        currentWord.substring(backend.getCursorIndex()) + " ");
+                // Make a new arraylist instead of just setting it to backend.getText because this means I will be 
+                // editing the original arrayList which I don't want to modify from this.
+                ArrayList<String> textToPrint = getNewArrayList();
 
                 printCenteredText(textToPrint, g, SCREEN_HEIGHT / 2);
-
             }
         }
     }
