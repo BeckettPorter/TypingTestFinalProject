@@ -56,7 +56,6 @@ public class TypingTest implements KeyListener {
         this.typedWords = typedWords;
     }
 
-
     // Other Methods
     // Method called every time a key is typed
     @Override
@@ -73,6 +72,7 @@ public class TypingTest implements KeyListener {
                 typedWords.add(text.remove(0));
 
             }
+            System.out.println();
         }
         else
         {
@@ -161,7 +161,6 @@ public class TypingTest implements KeyListener {
         elapsedTime = 0;
         setupUpdateTimer();
         updateTimer.start();
-
     }
 
     public double getElapsedTimeMinutes()
