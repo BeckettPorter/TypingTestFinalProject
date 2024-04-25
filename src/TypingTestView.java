@@ -1,6 +1,5 @@
 import javax.swing.*;
 import java.awt.*;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class TypingTestView extends JFrame {
@@ -11,11 +10,17 @@ public class TypingTestView extends JFrame {
     public final static int SCREEN_X_OFFSET = 100;
     public final static int LINE_Y_OFFSET = 40;
     public final static int PIXELS_BETWEEN_WORDS = 25;
-    public final static int NUM_WORDS_TO_SHOW = 10;
+    public final static int NUM_WORDS_TO_SHOW = 9;
+
+    // Stats spacings
+    public final static int STATS_STARTING_HEIGHT = 50;
+    public final static int STATS_X_OFFSET = SCREEN_WIDTH / 8 * 6;
+    public final static int STATS_Y_OFFSET = 25;
 
     private final static Color lightBlue = new Color(37, 125, 141);
     private final static Color darkBlue = new Color(36, 36, 150);
-    private final static Font bigFont = new Font("Calibri", Font.BOLD, 30);
+    private final static Font statsFont = new Font("Calibri", Font.BOLD, 30);
+    private final static Font textFont = new Font("Calibri", Font.BOLD, 40);
     private final static Image backgroundImage = new ImageIcon("Resources/Background.png").getImage();
 
     private final TypingTest backend;
@@ -29,16 +34,6 @@ public class TypingTestView extends JFrame {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.add(new DrawingPanel());
         this.setVisible(true);
-    }
-
-    // Calculates the offset needed for a line of text so it is centered
-    private int calcCenteredTextOffset(String text, Graphics g)
-    {
-        // Code I found online that allows me to find the size of text
-        FontMetrics metrics = g.getFontMetrics();
-        int textWidth = metrics.stringWidth(text);
-
-        return (SCREEN_WIDTH - textWidth) / 2;
     }
 
     private ArrayList<String> getNewArrayList()
@@ -61,6 +56,10 @@ public class TypingTestView extends JFrame {
     // instead of going off the screen.
     private void drawText(ArrayList<String> ar, Graphics g, int startingHeight)
     {
+        // Set color and font to the correct ones for the main text.
+        g.setColor(darkBlue);
+        g.setFont(textFont);
+
         // Code I found online that lets me access the on-screen width of a string for a given font
         FontMetrics metrics = g.getFontMetrics();
         int yPos = startingHeight;
@@ -87,6 +86,21 @@ public class TypingTestView extends JFrame {
         }
     }
 
+    // Print Stats
+    private void printStats(Graphics g)
+    {
+        // Set color and font to the correct ones for the stats.
+        g.setColor(lightBlue);
+        g.setFont(statsFont);
+
+        int height = STATS_STARTING_HEIGHT;
+
+        // Draw WPM
+        g.drawString("WPM: " + backend.getWPM(), STATS_X_OFFSET, height);
+
+        height += STATS_Y_OFFSET;
+    }
+
     // Code I found online that allows me to use double buffering for a smoother screen refresh
     // and to eliminate JFrame flickering
     private class DrawingPanel extends JPanel {
@@ -100,15 +114,10 @@ public class TypingTestView extends JFrame {
                 // Draw the background image over the whole screen to clear the last frame
                 g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
 
-                g.setColor(lightBlue);
-                g.setFont(bigFont);
 
-                // Draw WPM
-                g.drawString("WPM: " + backend.getWPM(),
-                        calcCenteredTextOffset("WPM: " + backend.getWPM(), g),
-                        SCREEN_HEIGHT / 4);
+                printStats(g);
 
-                g.setColor(darkBlue);
+
                 // Make a new arraylist instead of just setting it to backend.getText because this means I will be
                 // editing the original arrayList which I don't want to modify from this.
                 ArrayList<String> textToPrint = getNewArrayList();

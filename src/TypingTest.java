@@ -127,7 +127,7 @@ public class TypingTest implements KeyListener {
                 "indigo", "jungle", "kangaroo", "lemon", "mosaic", "novel", "oasis", "penguin",
                 "quilt", "robot", "sunflower", "tiger", "umbrella", "violin", "walnut", "xylophone",
                 "yogurt", "zebra", "diamond", "engine", "fern", "gorilla", "harp", "island",
-                "jewel", "kite", "lotus", "mountain", "neon", "orange", "peacock", "quiver",
+                "jewel", "kite", "lotus", "mountain", "neon", "orange", "quiver",
                 "river", "shadow", "turtle", "unicorn", "volcano", "whale", "x-ray", "yellow",
                 "zoo", "apple", "bridge", "cloud", "dove", "eagle", "forest", "grape",
                 "hill", "ice", "juice", "key", "leaf", "moon", "night", "ocean",
