@@ -118,28 +118,34 @@ public class TypingTest implements KeyListener {
     {
         // This is code I found online that allows me to add all these words to an arrayList
         // without having to do it on many separate lines.
-        ArrayList<String> newAr =   new ArrayList<>(Arrays.asList(
-                "ability", "absurd", "academy", "access", "adapt",
-                "adventure", "aftermath", "aggregate", "alarm", "alloy",
-                "analysis", "ancestor", "angle", "antique", "apology",
-                "apparatus", "appreciate", "arbitrary", "archive", "arena",
-                "arrest", "articulate", "assault", "asset", "assign",
-                "assist", "assume", "assure", "atmosphere", "attach",
-                "auction", "audit", "authentic", "authorize", "autumn",
-                "availability", "avatar", "avenue", "awareness", "awesome",
-                "awkward", "bachelor", "ballet", "banner", "barrier",
-                "baseline", "battle", "beacon", "behavior", "believe",
-                "bicycle", "biography", "biology", "blanket", "blizzard",
-                "blossom", "blueprint", "blunder", "boardwalk", "boisterous",
-                "boundary", "bouquet", "bravery", "brevity", "broker",
-                "butterfly", "cabinet", "calculus", "camera", "campaign",
-                "canal", "candle", "capability", "capacitor", "capital",
-                "captain", "carriage", "catalog", "catalyst", "category",
-                "caterpillar", "cautious", "caveat", "celebrate", "census",
-                "ceremony", "certainty", "challenge", "chamber", "champion",
-                "channel", "chaos", "characteristic", "charisma", "charity",
-                "chart", "chase", "checkpoint", "cheer", "chemistry"
+        ArrayList<String> newAr = new ArrayList<>(Arrays.asList(
+                "ability", "absurd", "academy", "access", "adapt", "adventure", "aftermath", "aggregate",
+                "alarm", "alloy", "analysis", "ancestor", "angle", "antique", "apology", "apparatus",
+                "appreciate", "arbitrary", "archive", "arena", "arrest", "articulate", "assault", "asset",
+                "assign", "assist", "assume", "assure", "atmosphere", "attach", "auction", "audit",
+                "authentic", "authorize", "autumn", "availability", "avatar", "avenue", "awareness", "awesome",
+                "awkward", "bachelor", "ballet", "banner", "barrier", "baseline", "battle", "beacon",
+                "behavior", "believe", "bicycle", "biography", "biology", "blanket", "blizzard", "blossom",
+                "blueprint", "blunder", "boardwalk", "boisterous", "boundary", "bouquet", "bravery", "brevity",
+                "broker", "butterfly", "cabinet", "calculus", "camera", "campaign", "canal", "candle",
+                "capability", "capacitor", "capital", "captain", "carriage", "catalog", "catalyst", "category",
+                "caterpillar", "cautious", "caveat", "celebrate", "census", "ceremony", "certainty", "challenge",
+                "chamber", "champion", "channel", "chaos", "characteristic", "charisma", "charity", "chart",
+                "chase", "checkpoint", "cheer", "chemistry", "discovery", "elephant", "frosting", "galaxy",
+                "harmonica", "inflatable", "jaguar", "kinetic", "labyrinth", "magnet", "navigator", "optical",
+                "paradox", "quantum", "resilient", "saxophone", "technology", "unicycle", "vortex", "whimsical",
+                "xenon", "yacht", "zealous", "dolphin", "echo", "flamingo", "giraffe", "hyena",
+                "indigo", "jungle", "kangaroo", "lemon", "mosaic", "novel", "oasis", "penguin",
+                "quilt", "robot", "sunflower", "tiger", "umbrella", "violin", "walnut", "xylophone",
+                "yogurt", "zebra", "diamond", "engine", "fern", "gorilla", "harp", "island",
+                "jewel", "kite", "lotus", "mountain", "neon", "orange", "peacock", "quiver",
+                "river", "shadow", "turtle", "unicorn", "volcano", "whale", "x-ray", "yellow",
+                "zoo", "apple", "bridge", "cloud", "dove", "eagle", "forest", "grape",
+                "hill", "ice", "juice", "key", "leaf", "moon", "night", "ocean",
+                "palm", "queen", "rose", "star", "tree", "vase", "wind", "fox", "yard", "zero"
         ));
+
+
 
         // Line of code I found online that randomizes the array order
         Collections.shuffle(newAr);

@@ -20,8 +20,6 @@ public class TypingTestView extends JFrame {
 
     private final TypingTest backend;
 
-
-
     // Constructor
     public TypingTestView(TypingTest backend)
     {
@@ -33,8 +31,7 @@ public class TypingTestView extends JFrame {
         this.setVisible(true);
     }
 
-
-    // Calulates the offset needed for a line of text so it is centered
+    // Calculates the offset needed for a line of text so it is centered
     private int calcCenteredTextOffset(String text, Graphics g)
     {
         // Code I found online that allows me to find the size of text
@@ -110,9 +107,6 @@ public class TypingTestView extends JFrame {
                 g.drawString("WPM: " + backend.getWPM(),
                         calcCenteredTextOffset("WPM: " + backend.getWPM(), g),
                         SCREEN_HEIGHT / 4);
-
-
-
 
                 g.setColor(darkBlue);
                 // Make a new arraylist instead of just setting it to backend.getText because this means I will be
