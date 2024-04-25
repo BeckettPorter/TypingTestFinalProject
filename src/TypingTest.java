@@ -70,22 +70,11 @@ public class TypingTest implements KeyListener {
             {
                 cursorIndex = 0;
                 typedWords.add(text.remove(0));
-
             }
-            System.out.println();
         }
         else
         {
             System.out.println("Wrong letter");
-        }
-
-        // Get the new current word if it was removed
-        currentWord = text.get(0);
-        System.out.print(currentWord.substring(0, cursorIndex) + "|" + currentWord.substring(cursorIndex) + " ");
-
-        for (int i = 1; i < 10; i++)
-        {
-            System.out.print(text.get(i) + " ");
         }
     }
 
