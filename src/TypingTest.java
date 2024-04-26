@@ -14,6 +14,7 @@ public class TypingTest implements KeyListener {
     private TypingTestView window;
     private ArrayList<String> text;
     private int WPM;
+    private int errorCount;
     private int cursorIndex;
     private ArrayList<String> typedWords;
     private double elapsedTime;
@@ -30,22 +31,16 @@ public class TypingTest implements KeyListener {
     // Getters and Setters
     public ArrayList<String> getText() { return text; }
 
-    public void setText(ArrayList<String> text) { this.text = text; }
-
     public int getWPM() {
         return WPM;
     }
 
-    public void setWPM(int WPM) {
-        this.WPM = WPM;
+    public int getErrorCount() {
+        return errorCount;
     }
 
     public int getCursorIndex() {
         return cursorIndex;
-    }
-
-    public void setCursorIndex(int cursorIndex) {
-        this.cursorIndex = cursorIndex;
     }
 
     public ArrayList<String> getTypedWords() {
@@ -74,6 +69,7 @@ public class TypingTest implements KeyListener {
         }
         else
         {
+            errorCount++;
             System.out.println("Wrong letter");
         }
     }
@@ -128,7 +124,7 @@ public class TypingTest implements KeyListener {
                 "quilt", "robot", "sunflower", "tiger", "umbrella", "violin", "walnut", "xylophone",
                 "yogurt", "zebra", "diamond", "engine", "fern", "gorilla", "harp", "island",
                 "jewel", "kite", "lotus", "mountain", "neon", "orange", "quiver",
-                "river", "shadow", "turtle", "unicorn", "volcano", "whale", "x-ray", "yellow",
+                "river", "shadow", "turtle", "unicorn", "volcano", "whale", "yellow",
                 "zoo", "apple", "bridge", "cloud", "dove", "eagle", "forest", "grape",
                 "hill", "ice", "juice", "key", "leaf", "moon", "night", "ocean",
                 "palm", "queen", "rose", "star", "tree", "vase", "wind", "fox", "yard", "zero"
@@ -151,6 +147,7 @@ public class TypingTest implements KeyListener {
         // so I can calculate elapsed time.
         startingTime = System.currentTimeMillis();
         WPM = 0;
+        errorCount = 0;
         cursorIndex = 0;
         typedWords = new ArrayList<>();
         elapsedTime = 0;

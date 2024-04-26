@@ -18,7 +18,8 @@ public class TypingTestView extends JFrame {
     public final static int STATS_Y_OFFSET = 25;
 
     private final static Color lightBlue = new Color(37, 125, 141);
-    private final static Color darkBlue = new Color(36, 36, 150);
+    private final static Color darkBlue = new Color(61, 88, 147);
+    private final static Color transparentBlue = new Color(93, 93, 117, 128);
     private final static Font statsFont = new Font("Calibri", Font.BOLD, 30);
     private final static Font textFont = new Font("Calibri", Font.BOLD, 40);
     private final static Image backgroundImage = new ImageIcon("Resources/Background.png").getImage();
@@ -57,7 +58,7 @@ public class TypingTestView extends JFrame {
     private void drawText(ArrayList<String> ar, Graphics g, int startingHeight)
     {
         // Set color and font to the correct ones for the main text.
-        g.setColor(darkBlue);
+        g.setColor(transparentBlue);
         g.setFont(textFont);
 
         // Code I found online that lets me access the on-screen width of a string for a given font
@@ -69,19 +70,40 @@ public class TypingTestView extends JFrame {
         for (int i = 0; i < NUM_WORDS_TO_SHOW; i++)
         {
             // Draws the current word at i in the arrayList of Strings
-            g.drawString(ar.get(i), xPos, yPos);
-
-            // If the next word will go off the screen, reset it to the starting x position and start a new line.
-            // Else, just print it normally
-            if (xPos + metrics.stringWidth(ar.get(i) + " ") + metrics.stringWidth(ar.get(i + 1) + " ")
-                    > SCREEN_WIDTH - SCREEN_X_OFFSET)
+            if (i == 0)
             {
-                xPos = SCREEN_X_OFFSET;
-                yPos += LINE_Y_OFFSET;
+                for (int j = 0; j < ar.get(0).length(); j++)
+                {
+                    if (j < backend.getCursorIndex())
+                    {
+                        g.setColor(darkBlue);
+
+                    }
+                    else
+                    {
+                        g.setColor(transparentBlue);
+                    }
+                    g.drawString(ar.get(0).substring(j, j + 1), xPos, yPos);
+                    xPos += metrics.stringWidth(ar.get(0).substring(j, j + 1));
+                }
+                xPos += PIXELS_BETWEEN_WORDS;
             }
             else
             {
-                xPos += metrics.stringWidth(ar.get(i) + " ") + PIXELS_BETWEEN_WORDS;
+                g.drawString(ar.get(i), xPos, yPos);
+
+                // If the next word will go off the screen, reset it to the starting x position and start a new line.
+                // Else, just print it normally
+                if (xPos + metrics.stringWidth(ar.get(i) + " ") + metrics.stringWidth(ar.get(i + 1) + " ")
+                        > SCREEN_WIDTH - SCREEN_X_OFFSET)
+                {
+                    xPos = SCREEN_X_OFFSET;
+                    yPos += LINE_Y_OFFSET;
+                }
+                else
+                {
+                    xPos += metrics.stringWidth(ar.get(i) + " ") + PIXELS_BETWEEN_WORDS;
+                }
             }
         }
     }
@@ -94,11 +116,17 @@ public class TypingTestView extends JFrame {
         g.setFont(statsFont);
 
         int height = STATS_STARTING_HEIGHT;
-
         // Draw WPM
         g.drawString("WPM: " + backend.getWPM(), STATS_X_OFFSET, height);
 
         height += STATS_Y_OFFSET;
+        // Draw Error Count
+        g.drawString("Error Count: " + backend.getErrorCount(), STATS_X_OFFSET, height);
+
+        height += STATS_Y_OFFSET;
+        // Draw Error Count
+        g.drawString("Error Count: " + backend.getWPM(), STATS_X_OFFSET, height);
+
     }
 
     // Code I found online that allows me to use double buffering for a smoother screen refresh
@@ -114,9 +142,7 @@ public class TypingTestView extends JFrame {
                 // Draw the background image over the whole screen to clear the last frame
                 g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
 
-
                 printStats(g);
-
 
                 // Make a new arraylist instead of just setting it to backend.getText because this means I will be
                 // editing the original arrayList which I don't want to modify from this.
