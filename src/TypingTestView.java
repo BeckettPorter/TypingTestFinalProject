@@ -2,7 +2,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 
-public class TypingTestView extends JFrame {
+public class TypingTestView extends JFrame
+{
 
     // Instance variables
     public final static int SCREEN_WIDTH = 1000;
@@ -13,9 +14,9 @@ public class TypingTestView extends JFrame {
     public final static int NUM_WORDS_TO_SHOW = 9;
 
     // Stats spacings
-    public final static int STATS_STARTING_HEIGHT = 50;
+    public final static int STATS_STARTING_HEIGHT = 75;
     public final static int STATS_X_OFFSET = SCREEN_WIDTH / 8 * 6;
-    public final static int STATS_Y_OFFSET = 25;
+    public final static int STATS_Y_OFFSET = 30;
 
     private final static Color lightBlue = new Color(37, 125, 141);
     private final static Color darkBlue = new Color(61, 88, 147);
@@ -123,9 +124,9 @@ public class TypingTestView extends JFrame {
         // Draw Error Count
         g.drawString("Error Count: " + backend.getErrorCount(), STATS_X_OFFSET, height);
 
-        height += STATS_Y_OFFSET;
-        // Draw Error Count
-        g.drawString("Error Count: " + backend.getWPM(), STATS_X_OFFSET, height);
+//        height += STATS_Y_OFFSET;
+//        // Draw Error Count
+//        g.drawString("Error Count: " + backend.getWPM(), STATS_X_OFFSET, height);
 
     }
 

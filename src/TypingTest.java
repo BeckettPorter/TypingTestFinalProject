@@ -8,10 +8,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
-public class TypingTest implements KeyListener {
+public class TypingTest implements KeyListener
+{
 
     // Instance variables
-    private TypingTestView window;
+    private final TypingTestView window;
     private ArrayList<String> text;
     private int WPM;
     private int errorCount;
@@ -158,10 +159,10 @@ public class TypingTest implements KeyListener {
     public double getElapsedTimeMinutes()
     {
         double currentTime = System.currentTimeMillis();
-        double elapsedTimeMillis = currentTime - startingTime;
+        elapsedTime = currentTime - startingTime;
 
         // This converts milliseconds to minutes
-        return elapsedTimeMillis / 60000.0;
+        return elapsedTime / 60000.0;
     }
 
     private void setupUpdateTimer()
