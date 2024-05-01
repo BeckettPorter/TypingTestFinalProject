@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 public class TypingTestView extends JFrame
 {
-
     // Instance variables
     public final static int SCREEN_WIDTH = 1000;
     public final static int SCREEN_HEIGHT = 600;
@@ -15,7 +14,7 @@ public class TypingTestView extends JFrame
 
     // Stats spacings
     public final static int STATS_STARTING_HEIGHT = 75;
-    public final static int STATS_X_OFFSET = SCREEN_WIDTH / 8 * 6;
+    public final static int STATS_X_OFFSET = SCREEN_WIDTH / 8 * 5;
     public final static int STATS_Y_OFFSET = 30;
 
     private final static Color lightBlue = new Color(37, 125, 141);
@@ -78,7 +77,6 @@ public class TypingTestView extends JFrame
                     if (j < backend.getCursorIndex())
                     {
                         g.setColor(darkBlue);
-
                     }
                     else
                     {
@@ -110,29 +108,83 @@ public class TypingTestView extends JFrame
     }
 
     // Print Stats
-    private void printStats(Graphics g)
+    private void drawStats(Graphics g, int startingHeight, boolean centerStats)
     {
         // Set color and font to the correct ones for the stats.
         g.setColor(lightBlue);
         g.setFont(statsFont);
 
-        int height = STATS_STARTING_HEIGHT;
-        // Draw WPM
-        g.drawString("WPM: " + backend.getWPM(), STATS_X_OFFSET, height);
+        int height;
+        // If i set a valid starting height, use that, otherwise just use default
+        if (startingHeight != -1)
+        {
+            height = startingHeight;
+        }
+        else
+        {
+            height = STATS_STARTING_HEIGHT;
+        }
+
+
+        int xOffset = STATS_X_OFFSET;
+        int remainingTime = backend.getTestLength() - (int)backend.getElapsedTimeSeconds();
+
+        if (centerStats)
+        {
+            xOffset = calcCenteredTextOffset("Remaining Time: " + remainingTime, g);
+        }
+        // Draw Remaining Time
+
+        g.drawString("Remaining Time: " + remainingTime, xOffset, height);
 
         height += STATS_Y_OFFSET;
+
+        if (centerStats)
+        {
+            xOffset = calcCenteredTextOffset("WPM: " + backend.getWPM(), g);
+        }
+        // Draw WPM
+        g.drawString("WPM: " + backend.getWPM(), xOffset, height);
+
+        height += STATS_Y_OFFSET;
+
+        if (centerStats)
+        {
+            xOffset = calcCenteredTextOffset("Error Count: " + backend.getErrorCount(), g);
+        }
         // Draw Error Count
-        g.drawString("Error Count: " + backend.getErrorCount(), STATS_X_OFFSET, height);
+        g.drawString("Error Count: " + backend.getErrorCount(), xOffset, height);
+    }
 
-//        height += STATS_Y_OFFSET;
-//        // Draw Error Count
-//        g.drawString("Error Count: " + backend.getWPM(), STATS_X_OFFSET, height);
+    private void drawTestOver(Graphics g)
+    {
+        // Set color and font to the correct ones for the test over screen.
+        g.setColor(darkBlue);
+        g.setFont(textFont);
+        g.drawString("Test Complete", calcCenteredTextOffset("Test Complete", g), SCREEN_HEIGHT / 2);
 
+        g.setColor(lightBlue);
+        g.setFont(statsFont);
+        g.drawString("Here are your stats", calcCenteredTextOffset("Here are your stats:", g),
+                SCREEN_HEIGHT / 2 + 40);
+
+        drawStats(g, SCREEN_HEIGHT / 2 + 80, true);
+    }
+
+
+    // Calculates the X cords for text to be centered on the screen.
+    private int calcCenteredTextOffset(String text, Graphics g)
+    {
+        FontMetrics metrics = g.getFontMetrics();
+        int textWidth = metrics.stringWidth(text);
+
+        return (SCREEN_WIDTH - textWidth) / 2;
     }
 
     // Code I found online that allows me to use double buffering for a smoother screen refresh
     // and to eliminate JFrame flickering
-    private class DrawingPanel extends JPanel {
+    private class DrawingPanel extends JPanel
+    {
         @Override
         protected void paintComponent(Graphics g)
         {
@@ -142,14 +194,20 @@ public class TypingTestView extends JFrame
             {
                 // Draw the background image over the whole screen to clear the last frame
                 g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+                if (backend.isTestRunning())
+                {
+                    drawStats(g, -1, false);
 
-                printStats(g);
-
-                // Make a new arraylist instead of just setting it to backend.getText because this means I will be
-                // editing the original arrayList which I don't want to modify from this.
-                ArrayList<String> textToPrint = getNewArrayList();
-                // Draw the text to the screen
-                drawText(textToPrint, g, SCREEN_HEIGHT / 2);
+                    // Make a new arraylist instead of just setting it to backend.getText because this means I will be
+                    // editing the original arrayList which I don't want to modify from this.
+                    ArrayList<String> textToPrint = getNewArrayList();
+                    // Draw the text to the screen
+                    drawText(textToPrint, g, SCREEN_HEIGHT / 2);
+                }
+                else
+                {
+                    drawTestOver(g);
+                }
             }
         }
     }

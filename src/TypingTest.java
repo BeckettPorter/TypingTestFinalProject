@@ -10,7 +10,6 @@ import java.util.Collections;
 
 public class TypingTest implements KeyListener
 {
-
     // Instance variables
     private final TypingTestView window;
     private ArrayList<String> text;
@@ -21,12 +20,17 @@ public class TypingTest implements KeyListener
     private double elapsedTime;
     private double startingTime;
     private Timer updateTimer;
+    private Timer testTimer;
+    private boolean testRunning;
+    private int testLength;
 
     // No argument constructor
     public TypingTest()
     {
         window = new TypingTestView(this);
         window.addKeyListener(this);
+        testRunning = false;
+        testLength = 10;
     }
 
     // Getters and Setters
@@ -50,6 +54,14 @@ public class TypingTest implements KeyListener
 
     public void setTypedWords(ArrayList<String> typedWords) {
         this.typedWords = typedWords;
+    }
+
+    public boolean isTestRunning() {
+        return testRunning;
+    }
+
+    public int getTestLength() {
+        return testLength;
     }
 
     // Other Methods
@@ -154,6 +166,16 @@ public class TypingTest implements KeyListener
         elapsedTime = 0;
         setupUpdateTimer();
         updateTimer.start();
+        testTimer.start();
+        testRunning = true;
+    }
+
+    private void endTest()
+    {
+        testRunning = false;
+        testTimer.stop();
+        updateTimer.stop();
+        window.repaint();
     }
 
     public double getElapsedTimeMinutes()
@@ -165,10 +187,19 @@ public class TypingTest implements KeyListener
         return elapsedTime / 60000.0;
     }
 
+    public double getElapsedTimeSeconds()
+    {
+        double currentTime = System.currentTimeMillis();
+        elapsedTime = currentTime - startingTime;
+
+        return elapsedTime / 1000;
+    }
+
     private void setupUpdateTimer()
     {
         // Code I found online that calls this event every frame (so these variables will be continuously updated).
-        updateTimer = new Timer(16, new ActionListener() {
+        updateTimer = new Timer(16, new ActionListener()
+        {
             @Override
             public void actionPerformed(ActionEvent e)
             {
@@ -177,6 +208,16 @@ public class TypingTest implements KeyListener
             }
         }
         );
+        testTimer = new Timer(testLength * 1000, new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                endTest();
+            }
+        }
+        );
+
     }
 
     // Main method that makes a new TypingTest.java object and calls startTest() on it.
