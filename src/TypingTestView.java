@@ -9,13 +9,12 @@ public class TypingTestView extends JFrame
     public final static int SCREEN_HEIGHT = 600;
     public final static int SCREEN_X_OFFSET = 100;
     public final static int LINE_Y_OFFSET = 40;
-    public final static int PIXELS_BETWEEN_WORDS = 25;
-    public final static int NUM_WORDS_TO_SHOW = 9;
+    public final static int NUM_WORDS_TO_SHOW = 10;
 
     // Stats spacings
     public final static int STATS_STARTING_HEIGHT = 75;
-    public final static int STATS_X_OFFSET = SCREEN_WIDTH / 8 * 5;
-    public final static int STATS_Y_OFFSET = 30;
+    public final static int STATS_X_OFFSET = 640;
+    public final static int STATS_Y_OFFSET = 40;
 
     private final static Color lightBlue = new Color(37, 125, 141);
     private final static Color darkBlue = new Color(61, 88, 147);
@@ -45,9 +44,9 @@ public class TypingTestView extends JFrame
         ArrayList<String> textToPrint = new ArrayList<>(backend.getText());
 
         // Add the cursor to the first word.
-        String currentWord = textToPrint.get(0);
+        String currentWord = textToPrint.get(backend.getTypedWords());
         // Set first word to have the cursor in the right position
-        textToPrint.set(0, currentWord.substring(0, backend.getCursorIndex()) + "|" +
+        textToPrint.set(backend.getTypedWords(), currentWord.substring(0, backend.getCursorIndex()) + "|" +
                 currentWord.substring(backend.getCursorIndex()) + " ");
 
         return textToPrint;
@@ -60,6 +59,18 @@ public class TypingTestView extends JFrame
         // Set color and font to the correct ones for the main text.
         g.setColor(transparentBlue);
         g.setFont(textFont);
+        int startingLoopIndex = 0;
+
+        // Loop that increments the startingLoopIndex by the correct amount to show the new screen of words once
+        // the current line is filled.
+        for (int i = 0; i <= backend.getTypedWords(); i += NUM_WORDS_TO_SHOW)
+        {
+            if (i >= NUM_WORDS_TO_SHOW)
+            {
+                startingLoopIndex += NUM_WORDS_TO_SHOW;
+            }
+        }
+        int currentWordIndex = backend.getTypedWords();
 
         // Code I found online that lets me access the on-screen width of a string for a given font
         FontMetrics metrics = g.getFontMetrics();
@@ -67,14 +78,14 @@ public class TypingTestView extends JFrame
         int xPos = SCREEN_X_OFFSET;
 
         // For loop that runs for the number of words I want to print
-        for (int i = 0; i < NUM_WORDS_TO_SHOW; i++)
+        for (int i = startingLoopIndex; i < startingLoopIndex + NUM_WORDS_TO_SHOW; i++)
         {
             // Draws the current word at i in the arrayList of Strings
-            if (i == 0)
+            if (i == currentWordIndex)
             {
-                for (int j = 0; j < ar.get(0).length(); j++)
+                for (int j = 0; j < ar.get(currentWordIndex).length(); j++)
                 {
-                    if (j < backend.getCursorIndex())
+                    if (j <= backend.getCursorIndex())
                     {
                         g.setColor(darkBlue);
                     }
@@ -82,13 +93,25 @@ public class TypingTestView extends JFrame
                     {
                         g.setColor(transparentBlue);
                     }
-                    g.drawString(ar.get(0).substring(j, j + 1), xPos, yPos);
-                    xPos += metrics.stringWidth(ar.get(0).substring(j, j + 1));
+                    g.drawString(ar.get(currentWordIndex).substring(j, j + 1), xPos, yPos);
+                    xPos += metrics.stringWidth(ar.get(currentWordIndex).substring(j, j + 1));
                 }
-                xPos += PIXELS_BETWEEN_WORDS;
+                if (xPos + metrics.stringWidth(ar.get(i) + " ") > SCREEN_WIDTH - SCREEN_X_OFFSET)
+                {
+                    xPos = SCREEN_X_OFFSET;
+                    yPos += LINE_Y_OFFSET;
+                }
             }
             else
             {
+                if (i < currentWordIndex)
+                {
+                    g.setColor(darkBlue);
+                }
+                else
+                {
+                    g.setColor(transparentBlue);
+                }
                 g.drawString(ar.get(i), xPos, yPos);
 
                 // If the next word will go off the screen, reset it to the starting x position and start a new line.
@@ -101,21 +124,21 @@ public class TypingTestView extends JFrame
                 }
                 else
                 {
-                    xPos += metrics.stringWidth(ar.get(i) + " ") + PIXELS_BETWEEN_WORDS;
+                    xPos += metrics.stringWidth(ar.get(i) + " ");
                 }
             }
         }
     }
 
     // Print Stats
-    private void drawStats(Graphics g, int startingHeight, boolean centerStats)
+    private void drawStats(Graphics g, int startingHeight, boolean centerStats, boolean showTime)
     {
         // Set color and font to the correct ones for the stats.
         g.setColor(lightBlue);
         g.setFont(statsFont);
 
         int height;
-        // If i set a valid starting height, use that, otherwise just use default
+        // If I set a valid starting height, use that, otherwise just use default
         if (startingHeight != -1)
         {
             height = startingHeight;
@@ -127,17 +150,20 @@ public class TypingTestView extends JFrame
 
 
         int xOffset = STATS_X_OFFSET;
-        int remainingTime = backend.getTestLength() - (int)backend.getElapsedTimeSeconds();
 
-        if (centerStats)
+        if (showTime)
         {
-            xOffset = calcCenteredTextOffset("Remaining Time: " + remainingTime, g);
+            int remainingTime = backend.getTestLength() - (int)backend.getElapsedTimeSeconds();
+
+            if (centerStats)
+            {
+                xOffset = calcCenteredTextOffset("Remaining Time: " + remainingTime, g);
+            }
+            // Draw Remaining Time
+
+            g.drawString("Remaining Time: " + remainingTime, xOffset, height);
+            height += STATS_Y_OFFSET;
         }
-        // Draw Remaining Time
-
-        g.drawString("Remaining Time: " + remainingTime, xOffset, height);
-
-        height += STATS_Y_OFFSET;
 
         if (centerStats)
         {
@@ -161,14 +187,15 @@ public class TypingTestView extends JFrame
         // Set color and font to the correct ones for the test over screen.
         g.setColor(darkBlue);
         g.setFont(textFont);
-        g.drawString("Test Complete", calcCenteredTextOffset("Test Complete", g), SCREEN_HEIGHT / 2);
+        g.drawString("Test Complete, press enter to restart.",
+                calcCenteredTextOffset("Test Complete, press enter to restart.", g), SCREEN_HEIGHT / 2 - 40);
 
         g.setColor(lightBlue);
         g.setFont(statsFont);
-        g.drawString("Here are your stats", calcCenteredTextOffset("Here are your stats:", g),
-                SCREEN_HEIGHT / 2 + 40);
+        g.drawString("Here are your stats:", calcCenteredTextOffset("Here are your stats:", g),
+                SCREEN_HEIGHT / 2);
 
-        drawStats(g, SCREEN_HEIGHT / 2 + 80, true);
+        drawStats(g, SCREEN_HEIGHT / 2 + 40, true, false);
     }
 
 
@@ -196,7 +223,7 @@ public class TypingTestView extends JFrame
                 g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
                 if (backend.isTestRunning())
                 {
-                    drawStats(g, -1, false);
+                    drawStats(g, -1, false, true);
 
                     // Make a new arraylist instead of just setting it to backend.getText because this means I will be
                     // editing the original arrayList which I don't want to modify from this.

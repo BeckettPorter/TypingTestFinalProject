@@ -16,13 +16,13 @@ public class TypingTest implements KeyListener
     private int WPM;
     private int errorCount;
     private int cursorIndex;
-    private ArrayList<String> typedWords;
+    private int typedWords;
     private double elapsedTime;
     private double startingTime;
     private Timer updateTimer;
     private Timer testTimer;
     private boolean testRunning;
-    private int testLength;
+    private final int testLength;
 
     // No argument constructor
     public TypingTest()
@@ -30,7 +30,7 @@ public class TypingTest implements KeyListener
         window = new TypingTestView(this);
         window.addKeyListener(this);
         testRunning = false;
-        testLength = 10;
+        testLength = 30;
     }
 
     // Getters and Setters
@@ -48,13 +48,10 @@ public class TypingTest implements KeyListener
         return cursorIndex;
     }
 
-    public ArrayList<String> getTypedWords() {
+    public int getTypedWords() {
         return typedWords;
     }
 
-    public void setTypedWords(ArrayList<String> typedWords) {
-        this.typedWords = typedWords;
-    }
 
     public boolean isTestRunning() {
         return testRunning;
@@ -69,21 +66,31 @@ public class TypingTest implements KeyListener
     @Override
     public void keyTyped(KeyEvent e)
     {
-        String currentWord = text.get(0);
+        String currentWord = text.get(typedWords);
 
-        if (cursorIndex < currentWord.length() && e.getKeyChar() == currentWord.charAt(cursorIndex))
+        if (isTestRunning())
         {
-            cursorIndex++;
-            if (cursorIndex == currentWord.length())
+            if (cursorIndex < currentWord.length() && e.getKeyChar() == currentWord.charAt(cursorIndex))
             {
-                cursorIndex = 0;
-                typedWords.add(text.remove(0));
+                cursorIndex++;
+                if (cursorIndex == currentWord.length())
+                {
+                    cursorIndex = 0;
+                    typedWords++;
+                }
+            }
+            else
+            {
+                errorCount++;
             }
         }
         else
         {
-            errorCount++;
-            System.out.println("Wrong letter");
+            if (e.getKeyChar() == KeyEvent.VK_ENTER)
+            {
+                System.out.println("new game");
+                startTest();
+            }
         }
     }
 
@@ -108,7 +115,7 @@ public class TypingTest implements KeyListener
             // If the time hasn't been updated yet, return 0, so it doesn't divide by 0 and break.
             return 0;
         }
-        return (int) (typedWords.size() / minutes);
+        return (int) (typedWords / minutes);
     }
 
     // Initializes an arrayList of strings that represents the text the user will type with random words.
@@ -143,7 +150,10 @@ public class TypingTest implements KeyListener
                 "palm", "queen", "rose", "star", "tree", "vase", "wind", "fox", "yard", "zero"
         ));
 
-
+        for (int i = 0; i < newAr.size(); i++)
+        {
+            newAr.set(i, newAr.get(i) + " ");
+        }
 
         // Line of code I found online that randomizes the array order
         Collections.shuffle(newAr);
@@ -162,7 +172,7 @@ public class TypingTest implements KeyListener
         WPM = 0;
         errorCount = 0;
         cursorIndex = 0;
-        typedWords = new ArrayList<>();
+        typedWords = 0;
         elapsedTime = 0;
         setupUpdateTimer();
         updateTimer.start();
