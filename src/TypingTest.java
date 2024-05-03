@@ -97,13 +97,13 @@ public class TypingTest implements KeyListener
     @Override
     public void keyPressed(KeyEvent e)
     {
-        // Not needed, just required by KeyListener
+        // Not needed, just required by KeyListener.
     }
 
     @Override
     public void keyReleased(KeyEvent e)
     {
-        // Not needed, just required by KeyListener
+        // Not needed, just required by KeyListener.
     }
 
     // Method that returns the words per minute.
