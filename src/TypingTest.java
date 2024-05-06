@@ -3,7 +3,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -22,7 +21,7 @@ public class TypingTest implements KeyListener
     private Timer updateTimer;
     private Timer testTimer;
     private boolean testRunning;
-    private final int testLength;
+    public static final int TEST_LENGTH = 30;
 
     // No argument constructor
     public TypingTest()
@@ -30,7 +29,6 @@ public class TypingTest implements KeyListener
         window = new TypingTestView(this);
         window.addKeyListener(this);
         testRunning = false;
-        testLength = 30;
     }
 
     // Getters and Setters
@@ -58,7 +56,7 @@ public class TypingTest implements KeyListener
     }
 
     public int getTestLength() {
-        return testLength;
+        return TEST_LENGTH;
     }
 
     // Other Methods
@@ -124,31 +122,23 @@ public class TypingTest implements KeyListener
         // This is code I found online that allows me to add all these words to an arrayList
         // without having to do it on many separate lines.
         ArrayList<String> newAr = new ArrayList<>(Arrays.asList(
-                "ability", "absurd", "academy", "access", "adapt", "adventure", "aftermath", "aggregate",
-                "alarm", "alloy", "analysis", "ancestor", "angle", "antique", "apology", "apparatus",
-                "appreciate", "arbitrary", "archive", "arena", "arrest", "articulate", "assault", "asset",
-                "assign", "assist", "assume", "assure", "atmosphere", "attach", "auction", "audit",
-                "authentic", "authorize", "autumn", "availability", "avatar", "avenue", "awareness", "awesome",
-                "awkward", "bachelor", "ballet", "banner", "barrier", "baseline", "battle", "beacon",
-                "behavior", "believe", "bicycle", "biography", "biology", "blanket", "blizzard", "blossom",
-                "blueprint", "blunder", "boardwalk", "boisterous", "boundary", "bouquet", "bravery", "brevity",
-                "broker", "butterfly", "cabinet", "calculus", "camera", "campaign", "canal", "candle",
-                "capability", "capacitor", "capital", "captain", "carriage", "catalog", "catalyst", "category",
-                "caterpillar", "cautious", "caveat", "celebrate", "census", "ceremony", "certainty", "challenge",
-                "chamber", "champion", "channel", "chaos", "characteristic", "charisma", "charity", "chart",
-                "chase", "checkpoint", "cheer", "chemistry", "discovery", "elephant", "frosting", "galaxy",
-                "harmonica", "inflatable", "jaguar", "kinetic", "labyrinth", "magnet", "navigator", "optical",
-                "paradox", "quantum", "resilient", "saxophone", "technology", "unicycle", "vortex", "whimsical",
-                "xenon", "yacht", "zealous", "dolphin", "echo", "flamingo", "giraffe", "hyena",
-                "indigo", "jungle", "kangaroo", "lemon", "mosaic", "novel", "oasis", "penguin",
-                "quilt", "robot", "sunflower", "tiger", "umbrella", "violin", "walnut", "xylophone",
-                "yogurt", "zebra", "diamond", "engine", "fern", "gorilla", "harp", "island",
-                "jewel", "kite", "lotus", "mountain", "neon", "orange", "quiver",
-                "river", "shadow", "turtle", "unicorn", "volcano", "whale", "yellow",
-                "zoo", "apple", "bridge", "cloud", "dove", "eagle", "forest", "grape",
-                "hill", "ice", "juice", "key", "leaf", "moon", "night", "ocean",
-                "palm", "queen", "rose", "star", "tree", "vase", "wind", "fox", "yard", "zero"
+                "skill", "odd", "school", "entry", "shift", "trip", "end", "total", "alert", "mix", "study", "root",
+                "bend", "old", "sorry", "gear", "like", "random", "store", "field", "catch", "clear", "hit", "plus",
+                "give", "help", "think", "sure", "air", "join", "sell", "check", "real", "allow", "fall", "use",
+                "icon", "road", "fact", "great", "clumsy", "grad", "dance", "sign", "wall", "base", "fight",
+                "act", "trust", "bike", "life", "cover", "storm", "plan", "error", "path", "loud", "edge",
+                "gift", "courage", "short", "agent", "fly", "box", "math", "photo", "drive", "part", "city",
+                "chief", "ride", "list", "spark", "type", "bug", "careful", "warn", "party", "count", "event",
+                "test", "room", "hero", "mess", "trait", "charm", "map", "race", "point", "joy", "chem", "find",
+                "star", "music", "balloon", "car", "motion", "maze", "magnet", "guide", "riddle",
+                "tiny", "tough", "tech", "cycle", "swirl", "funny", "gas", "boat", "fervent", "sound",
+                "bird", "laugh", "color", "wood", "hop", "berry", "leaf", "art", "book", "water",
+                "bot", "plant", "big", "rain", "nut", "food", "horse", "gem", "motor", "ape",
+                "place", "fly", "flower", "peak", "fruit", "arrow", "stream", "shade", "myth", "mount",
+                "day", "cup", "night", "tree", "jar", "field", "nothing"
         ));
+
+
 
         for (int i = 0; i < newAr.size(); i++)
         {
@@ -158,6 +148,13 @@ public class TypingTest implements KeyListener
         // Line of code I found online that randomizes the array order
         Collections.shuffle(newAr);
 
+        // Remove space after every NUM_WORDS_TO_SHOW word so the user doesn't have
+        // to press space after typing the final word.
+
+        for (int i = TypingTestView.NUM_WORDS_TO_SHOW - 1; i < newAr.size(); i += TypingTestView.NUM_WORDS_TO_SHOW)
+        {
+            newAr.set(i, newAr.get(i).substring(0, newAr.get(i).length() - 1));
+        }
         return newAr;
     }
 
@@ -218,7 +215,7 @@ public class TypingTest implements KeyListener
             }
         }
         );
-        testTimer = new Timer(testLength * 1000, new ActionListener()
+        testTimer = new Timer(TEST_LENGTH * 1000, new ActionListener()
         {
             @Override
             public void actionPerformed(ActionEvent e)

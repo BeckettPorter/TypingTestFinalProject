@@ -9,13 +9,14 @@ public class TypingTestView extends JFrame
     public final static int SCREEN_HEIGHT = 600;
     public final static int SCREEN_X_OFFSET = 100;
     public final static int LINE_Y_OFFSET = 40;
-    public final static int NUM_WORDS_TO_SHOW = 10;
+    public final static int NUM_WORDS_TO_SHOW = 14;
 
     // Stats spacings
     public final static int STATS_STARTING_HEIGHT = 75;
     public final static int STATS_X_OFFSET = 640;
     public final static int STATS_Y_OFFSET = 40;
 
+    // Colors, fonts, and background variables
     private final static Color lightBlue = new Color(37, 125, 141);
     private final static Color darkBlue = new Color(61, 88, 147);
     private final static Color transparentBlue = new Color(93, 93, 117, 128);
@@ -96,7 +97,7 @@ public class TypingTestView extends JFrame
                     g.drawString(ar.get(currentWordIndex).substring(j, j + 1), xPos, yPos);
                     xPos += metrics.stringWidth(ar.get(currentWordIndex).substring(j, j + 1));
                 }
-                if (xPos + metrics.stringWidth(ar.get(i) + " ") > SCREEN_WIDTH - SCREEN_X_OFFSET)
+                if (xPos + metrics.stringWidth(ar.get(i + 1) + " ") > SCREEN_WIDTH - SCREEN_X_OFFSET)
                 {
                     xPos = SCREEN_X_OFFSET;
                     yPos += LINE_Y_OFFSET;
