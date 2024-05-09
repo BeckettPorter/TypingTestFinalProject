@@ -5,23 +5,23 @@ import java.util.ArrayList;
 public class TypingTestView extends JFrame
 {
     // Instance variables
-    public final static int SCREEN_WIDTH = 1000;
-    public final static int SCREEN_HEIGHT = 600;
-    public final static int SCREEN_X_OFFSET = 100;
-    public final static int LINE_Y_OFFSET = 40;
-    public final static int NUM_WORDS_TO_SHOW = 14;
+    public final static int SCREEN_WIDTH = 1750;
+    public final static int SCREEN_HEIGHT = 1080;
+    public final static int SCREEN_X_OFFSET = 125;
+    public final static int LINE_Y_OFFSET = 100;
+    public final static int NUM_WORDS_TO_SHOW = 16;
 
     // Stats spacings
-    public final static int STATS_STARTING_HEIGHT = 75;
-    public final static int STATS_X_OFFSET = 640;
-    public final static int STATS_Y_OFFSET = 40;
+    public final static int STATS_STARTING_HEIGHT = 110;
+    public final static int STATS_X_OFFSET = SCREEN_WIDTH / 11 * 7;
+    public final static int STATS_Y_OFFSET = 50;
 
     // Colors, fonts, and background variables
     private final static Color lightBlue = new Color(37, 125, 141);
     private final static Color darkBlue = new Color(61, 88, 147);
     private final static Color transparentBlue = new Color(93, 93, 117, 128);
-    private final static Font statsFont = new Font("Calibri", Font.BOLD, 30);
-    private final static Font textFont = new Font("Calibri", Font.BOLD, 40);
+    private final static Font statsFont = new Font("Calibri", Font.BOLD, 50);
+    private final static Font textFont = new Font("Calibri", Font.BOLD, 80);
     private final static Image backgroundImage = new ImageIcon("Resources/Background.png").getImage();
 
     private final TypingTest backend;
@@ -117,7 +117,7 @@ public class TypingTestView extends JFrame
 
                 // If the next word will go off the screen, reset it to the starting x position and start a new line.
                 // Else, just print it normally
-                if (xPos + metrics.stringWidth(ar.get(i) + " ") + metrics.stringWidth(ar.get(i + 1) + " ")
+                if (xPos + metrics.stringWidth(ar.get(i) + " ") + metrics.stringWidth(ar.get(i + 1))
                         > SCREEN_WIDTH - SCREEN_X_OFFSET)
                 {
                     xPos = SCREEN_X_OFFSET;
@@ -189,14 +189,15 @@ public class TypingTestView extends JFrame
         g.setColor(darkBlue);
         g.setFont(textFont);
         g.drawString("Test Complete, press enter to restart.",
-                calcCenteredTextOffset("Test Complete, press enter to restart.", g), SCREEN_HEIGHT / 2 - 40);
+                calcCenteredTextOffset("Test Complete, press enter to restart.", g),
+                SCREEN_HEIGHT / 2 - STATS_Y_OFFSET);
 
         g.setColor(lightBlue);
         g.setFont(statsFont);
         g.drawString("Here are your stats:", calcCenteredTextOffset("Here are your stats:", g),
                 SCREEN_HEIGHT / 2);
 
-        drawStats(g, SCREEN_HEIGHT / 2 + 40, true, false);
+        drawStats(g, SCREEN_HEIGHT / 2 + STATS_Y_OFFSET, true, false);
     }
 
 

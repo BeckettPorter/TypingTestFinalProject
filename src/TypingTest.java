@@ -135,7 +135,7 @@ public class TypingTest implements KeyListener
                 "bird", "laugh", "color", "wood", "hop", "berry", "leaf", "art", "book", "water",
                 "bot", "plant", "big", "rain", "nut", "food", "horse", "gem", "motor", "ape",
                 "place", "fly", "flower", "peak", "fruit", "arrow", "stream", "shade", "myth", "mount",
-                "day", "cup", "night", "tree", "jar", "field", "nothing"
+                "day", "cup", "night", "tree", "jar", "nothing"
         ));
 
 
