@@ -74,6 +74,7 @@ public class TypingTest implements KeyListener
     {
         String currentWord = text.get(typedWords);
 
+        // If the test is running, do normal logic to check if the key is the correct one.
         if (isTestRunning())
         {
             if (cursorIndex < currentWord.length() && e.getKeyChar() == currentWord.charAt(cursorIndex))
@@ -90,6 +91,7 @@ public class TypingTest implements KeyListener
                 errorCount++;
             }
         }
+        // Otherwise, if the test isn't running, if the user presses enter, restart the game.
         else
         {
             if (e.getKeyChar() == KeyEvent.VK_ENTER)

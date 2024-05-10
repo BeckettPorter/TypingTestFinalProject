@@ -105,6 +105,9 @@ public class TypingTestView extends JFrame
                     g.drawString(ar.get(currentWordIndex).substring(j, j + 1), xPos, yPos);
                     xPos += metrics.stringWidth(ar.get(currentWordIndex).substring(j, j + 1));
                 }
+                // If the next word will go off the screen, reset it to the starting x position and start a new line.
+                // Else, just print it normally. This shouldn't include the current word though, because xPos
+                // was already increased to the right spot from the for loop above.
                 if (xPos + metrics.stringWidth(ar.get(i + 1) + " ") > SCREEN_WIDTH - SCREEN_X_OFFSET)
                 {
                     xPos = SCREEN_X_OFFSET;
