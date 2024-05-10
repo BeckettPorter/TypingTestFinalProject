@@ -21,7 +21,7 @@ public class TypingTest implements KeyListener
     private Timer updateTimer;
     private Timer testTimer;
     private boolean testRunning;
-    public static final int TEST_LENGTH = 25;
+    public static final int TEST_LENGTH = 20;
 
     // No argument constructor
     public TypingTest()
