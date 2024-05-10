@@ -2,6 +2,14 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 
+/**
+ * TypingTest and TypingTestView
+ * Written by Beckett Porter for CS2
+ *
+ * This project implements the KeyListener and uses JFrame to make a typing test that allows users to find
+ * their typing speed, along with accuracy.
+ */
+
 public class TypingTestView extends JFrame
 {
     // Instance variables

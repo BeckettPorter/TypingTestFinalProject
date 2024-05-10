@@ -7,6 +7,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
+/**
+ * TypingTest and TypingTestView
+ * Written by Beckett Porter for CS2
+ *
+ * This project implements the KeyListener and uses JFrame to make a typing test that allows users to find
+ * their typing speed, along with accuracy.
+ */
+
 public class TypingTest implements KeyListener
 {
     // Instance variables
@@ -21,7 +29,7 @@ public class TypingTest implements KeyListener
     private Timer updateTimer;
     private Timer testTimer;
     private boolean testRunning;
-    public static final int TEST_LENGTH = 20;
+    public static final int TEST_LENGTH = 30;
 
     // No argument constructor
     public TypingTest()
@@ -177,6 +185,7 @@ public class TypingTest implements KeyListener
         testRunning = true;
     }
 
+    // Method that ends the test and resets variables so the next test will start correctly. Also stops the timer.
     private void endTest()
     {
         testRunning = false;
@@ -185,6 +194,7 @@ public class TypingTest implements KeyListener
         window.repaint();
     }
 
+    // Gets the time since the test started in minutes.
     public double getElapsedTimeMinutes()
     {
         double currentTime = System.currentTimeMillis();
@@ -194,6 +204,7 @@ public class TypingTest implements KeyListener
         return elapsedTime / 60000.0;
     }
 
+    // Gets the time since the test started in seconds.
     public double getElapsedTimeSeconds()
     {
         double currentTime = System.currentTimeMillis();
@@ -202,6 +213,7 @@ public class TypingTest implements KeyListener
         return elapsedTime / 1000;
     }
 
+    //
     private void setupUpdateTimer()
     {
         // Code I found online that calls this event every frame (so these variables will be continuously updated).
