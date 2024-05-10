@@ -21,7 +21,7 @@ public class TypingTest implements KeyListener
     private Timer updateTimer;
     private Timer testTimer;
     private boolean testRunning;
-    public static final int TEST_LENGTH = 30;
+    public static final int TEST_LENGTH = 25;
 
     // No argument constructor
     public TypingTest()
@@ -127,7 +127,7 @@ public class TypingTest implements KeyListener
                 "give", "help", "think", "sure", "air", "join", "sell", "check", "real", "allow", "fall", "use",
                 "icon", "road", "fact", "great", "clumsy", "grad", "dance", "sign", "wall", "base", "fight",
                 "act", "trust", "bike", "life", "cover", "storm", "plan", "error", "path", "loud", "edge",
-                "gift", "courage", "short", "agent", "fly", "box", "math", "photo", "drive", "part", "city",
+                "gift", "courage", "short", "agent", "box", "math", "photo", "drive", "part", "city",
                 "chief", "ride", "list", "spark", "type", "bug", "careful", "warn", "party", "count", "event",
                 "test", "room", "hero", "mess", "trait", "charm", "map", "race", "point", "joy", "chem", "find",
                 "star", "music", "balloon", "car", "motion", "maze", "magnet", "guide", "riddle",

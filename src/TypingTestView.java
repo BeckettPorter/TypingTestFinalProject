@@ -9,7 +9,7 @@ public class TypingTestView extends JFrame
     public final static int SCREEN_HEIGHT = 1080;
     public final static int SCREEN_X_OFFSET = 125;
     public final static int LINE_Y_OFFSET = 100;
-    public final static int NUM_WORDS_TO_SHOW = 16;
+    public final static int NUM_WORDS_TO_SHOW = 17;
 
     // Stats spacings
     public final static int STATS_STARTING_HEIGHT = 110;
